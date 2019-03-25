@@ -11,14 +11,16 @@
 
 </div>
 <input name="file" id="file" type="file" accept="image/png,image/gif,image/jpeg" multiple="multiple"/>
+<input name="tag" id="tag" type="text">
 <button id="confirm">确定</button>
 </body>
 <script src="http://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
   document.getElementById('file').onchange = function(){
-	  alert('aa')
+	  // alert('aa')
 	}
+
 	document.getElementById('confirm').onclick = function () {
       var windowURL = window.URL
 	  var dataUrl;
@@ -45,7 +47,8 @@
       }))
 	  param.append('author', 'yomi')
 	  param.append('takeTime', new Date())
-      console.log(param.get('name')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
+    param.append('tag', $('#tag').val())
+      console.log(param.get('tag')) // FormData私有类对象，访问不到，可以通过get判断值是否传进去
       let config = {
         headers: {'Content-Type': 'multipart/form-data'}
       }

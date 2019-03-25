@@ -8,5 +8,6 @@ module.exports = {
   PHOTOGRAPH_SIZE_MIDDLE: 1000,
 	DB_NAME: 'YomiWebside',
 	DB_PROT: 27017,
-	DB_HOST: '127.0.0.1'
+	DB_HOST: '127.0.0.1',
+	IMG_SERVER: 'http://img.yomij.cn/'
 }

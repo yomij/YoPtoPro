@@ -35,6 +35,5 @@ app.use(async (ctx, next) => {
 app.use(cors())
 app.use(main);
 app.use(Router.routes());
-app.use(Router.routes());
 // console.log(Router)
-app.listen(config.APP_PORT, () => console.log(`running http://localhost:${config.APP_PORT}/test.html`));
+app.listen(config.APP_PORT, () => console.log(`running http://localhost:${config.APP_PORT}/test.html`, 'test'));

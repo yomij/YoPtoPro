@@ -3,9 +3,10 @@ const path = require('path');
 
 const gm = require('gm');
 const uuidv5 = require('uuid/v5');
-
 const fmtTime = require('./fmtTime');
 const config = require('../../config');
+
+const upload = require('./upload')
 
 function getUUID(name) {
   return uuidv5(name, uuidv5.DNS).replace(/-/g, '')
@@ -52,7 +53,6 @@ function getIdentify(file) {
       if (err) {
         reject(err)
       } else {
-        console.log(value);
         resolve({
           fileSize: value.Filesize,
           size: value.size,
@@ -64,6 +64,42 @@ function getIdentify(file) {
     })
   })
 }
+
+function resize(p, size) {
+  return new Promise((reslove, reject) => {
+    gm(p).resize(size)
+      .noProfile()
+      .stream( (err, stdout, stderr) => {
+        if (err) {
+          reject(err)
+        } else {
+          reslove(stdout)
+        }
+      })
+  })
+}
+
+
+async function uploadPhotograph(file, tag, size = {m: 3120, s: 416}) {
+  let reader = fs.createReadStream(file.path);
+  // let type = file.type.split('/')[1];
+  let doc = {};
+  let fileName = getUUID(file.name);
+  const ind = await getIdentify(file.path)
+  const lRes = await upload.upToQiniuStream(reader, `${tag}/l/${fileName}`)
+  const mRes = await upload.upToQiniuStream(await resize(file.path, size.m) , `${tag}/m/${fileName}`)
+  const sRes = await upload.upToQiniuStream(await resize(file.path, size.s), `${tag}/s/${fileName}`)
+  doc.identify = ind;
+  doc.urls = {
+    s: `${config.IMG_SERVER}${sRes.key}`,
+    m: `${config.IMG_SERVER}${mRes.key}`,
+    l: `${config.IMG_SERVER}${lRes.key}`
+  }
+  doc.fileName = fileName;
+  doc.originName = file.name;
+  return doc
+}
+
 
 function writePhotograph(file, tag, smallWidth = 416) {
   let p = path.join(config.PHOTOGRAPH_PATH, tag)
@@ -78,6 +114,7 @@ function writePhotograph(file, tag, smallWidth = 416) {
       const upStream = fs.createWriteStream(`${p}/l/${fileName}.${type}`);
       // 可读流通过管道写入可写流
       reader.pipe(upStream);
+      upload.upToQiniuStream(reader, 'up/aaaaaaaaaaaaaaaaaaaa.jpg')
     } catch (err) {
       reject(err)
     }
@@ -106,4 +143,5 @@ module.exports = {
   makeDir,
   writePhotograph,
   readPhotograph,
+  uploadPhotograph
 };

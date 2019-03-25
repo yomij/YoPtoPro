@@ -1,61 +1,41 @@
 const photoDao = require('./photographDao')
 const fileUtil = require('../utils/file')
 
-// {
-//   id: Number,
-//    name: String,
-//   type: Number, // 0 原创， 2 转载
-//   description: String,
-//   author: String,
-//   likeCount: Number,
-//   downloadCount: Number,
-//   mainTag: String,
-//   tags: Array,
-//   takeTime: Date,
-//   uploadTime: { type: Date, default: Date.now },
-//   identify: {
-//     fileSize: String,
-//       size: {
-//       height: Number,
-//         width: {
-//         type: Number,
-//           min: 500
-//       }
-//     },
-//     format: String,
-//       geometry: String,
-//       compression: String
-//   },
-//   urls: {
-//     s: String,
-//       m: String,
-//       l: String
-//   }
-// }
-
-
-async function uploadPhoto(files) {
-  let msg = []
-  for(let i = 0; i < files.length; i++) {
-    let file = files[i]
-    if(file && /^image\/(png|jpeg|jpg)$/g.test(file.type)) {
-      fileUtil.makeDir('tag/l')
-      fileUtil.makeDir('tag/s')
-      await fileUtil.writePhotograph(file, 'tag').then(res => {
-        console.log(res)
-        msg.push(res)
-      }).catch(e => {
+async function uploadPhoto(files, tag) {
+  let msg = [];
+  try {
+    if (!files.length) files = [files]
+    for (let i = 0; i < files.length; i++) {
+      let file = files[i];
+      if (file && /^image\/(png|jpeg|jpg)$/g.test(file.type)) {
+        const res = await fileUtil.uploadPhotograph(file, tag)
+        await photoDao.insertPhotograpth(res, tag)
+        msg.push()
+      } else {
         msg.push({
+          status: 500,
           originName: file.name,
-          err: 'picture upload failed.'
+          message: 'file is not a picture'
         })
-      })
-    } else {
-      msg.push({
-        originName: file.name,
-        err: 'file is not a picture'
-      })
+      }
     }
+  } catch (e) {
+    msg.push({
+      code: 500,
+      message: e.message
+    })
   }
-  return msg
+  return {
+    status: 200,
+    message: msg
+  }
+}
+
+async function getPhoto (t ,n ,s) {
+  return await photoDao.getPhotographList(t,n, s)
+}
+
+module.exports = {
+  uploadPhoto,
+  getPhoto
 }

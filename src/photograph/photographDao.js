@@ -38,7 +38,22 @@ const photograph = yomiDb.createSchema({ //模式，架构
 const photographModel = db.model('photograph', photograph); //创建collection
 
 module.exports = {
-  insertPhotograpth(photograph) {
+  insertPhotograpth(photograph, tag = ['yomi']) {
+    if(typeof tag === 'string') {
+      tag = [tag]
+    }
+    photograph.tags = tag
+    photograph = Object.assign(photograph, {
+      name: photograph.fileName,
+      type: 0, // 0 原创， 2 转载
+      description: '这是一张不想写描述的照片',
+      author: 'Yomi (Ps:Maybe)',
+      likeCount: 0,
+      downloadCount: 0,
+      mainTag: 'yomi',
+      takeTime: new Date(),
+    })
+    console.log(photograph)
     return new Promise((reslove, reject) => {
       photograph.uploadTime = new Date(); //添加修改时间
       const nt = new photographModel(photograph);
@@ -53,6 +68,27 @@ module.exports = {
           reslove(doc)
         }
       })
+    })
+  },
+  getPhotographList(tag, pageNo, pageSize) {
+    const res = {}
+    const query1 = photographModel.find({
+      tags: {$in: [tag]}
+    });
+    const query2 = photographModel.find({
+      tags: {$in: [tag]}
+    });
+    return new Promise((reslove, reject) => {
+      query1.countDocuments().exec((e, c) => {
+        if(e) reject(e)
+        res.total = c
+        query2.skip((pageNo - 1) * pageSize)
+          .limit(pageSize).exec((e, c) => {
+          if(e) reject(e)
+          res.photoList = c
+          reslove(res)
+        })
+      });
     })
   }
 };

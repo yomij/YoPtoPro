@@ -16,7 +16,7 @@ class DB {
       return DB.connected[this.name];
     }
 
-    const db = this.mongoose.createConnection(`mongodb://${config.DB_HOST}:${this.port}/${this.name}`);
+    const db = this.mongoose.createConnection(`mongodb://${config.DB_HOST}:${this.port}/${this.name}`, {useNewUrlParser:true});
     DB.connected[this.name] = db;
     db.on('error', error => console.log('Database connect failed' + error));
     db.once('open', () => console.log("Database connect success,time:" + new Date().toLocaleString()));
