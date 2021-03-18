@@ -21,10 +21,15 @@ photograph.get('/*.jpg', async (ctx, next) => {
 
 // 上传
 photograph.post('/upload', async (ctx, next) => {
-  let files = ctx.request.files.file; // 获取上传文件
-  const tag = ctx.request.body.tag || 'yomi'
-  const res = await pServer.uploadPhoto(files, tag)
-  ctx.body = res
+  debugger
+  try {
+    let files = ctx.request.files.file; // 获取上传文件
+    const tag = ctx.request.body.tag || 'yomi'
+    const res = await pServer.uploadPhoto(files, tag)
+    ctx.body = res
+  } catch (e) {
+    console.log(e)
+  }
 });
 
 // 获取照片列表

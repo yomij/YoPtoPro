@@ -2,13 +2,16 @@ const photoDao = require('./photographDao')
 const fileUtil = require('../utils/file')
 
 async function uploadPhoto(files, tag) {
+  debugger
   let msg = [];
   try {
     if (!files.length) files = [files]
     for (let i = 0; i < files.length; i++) {
       let file = files[i];
       if (file && /^image\/(png|jpeg|jpg)$/g.test(file.type)) {
+        debugger
         const res = await fileUtil.uploadPhotograph(file, tag)
+        debugger
         await photoDao.insertPhotograpth(res, tag)
         msg.push()
       } else {

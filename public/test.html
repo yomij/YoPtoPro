@@ -53,7 +53,7 @@
         headers: {'Content-Type': 'multipart/form-data'}
       }
       // 添加请求头
-      axios.post('http://localhost:3000/api/ym/photograph/upload', param, config)
+      axios.post('http://localhost:3003/api/ym/photograph/upload', param, config)
         .then(response => {
           if (response.data.code === 0) {
             console.log(response.data.data);

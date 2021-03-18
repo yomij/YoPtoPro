@@ -49,18 +49,26 @@ function readPhotograph(name, size, mainTag) {
 
 function getIdentify(file) {
   return new Promise((resolve, reject) => {
-    gm(file).identify((err, value) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve({
-          fileSize: value.Filesize,
-          size: value.size,
-          format: value.format,
-          geometry: value.Geometry,
-          compression: value.Compression,
-        })
-      }
+    // gm(file).identify((err, value) => {
+    //   if (err) {
+    //     reject(err)
+    //   } else {
+    //     resolve({
+    //       fileSize: value.Filesize,
+    //       size: value.size,
+    //       format: value.format,
+    //       geometry: value.Geometry,
+    //       compression: value.Compression,
+    //     })
+    //   }
+    // })
+  
+    resolve({
+      fileSize: '23',
+      size: {width: 100, height: 100},
+      format: null,
+      geometry: null,
+      compression: null,
     })
   })
 }
@@ -86,17 +94,18 @@ async function uploadPhotograph(file, tag, size = {m: 3120, s: 416}) {
   let doc = {};
   let fileName = getUUID(file.name);
   const ind = await getIdentify(file.path)
-  const lRes = await upload.upToQiniuStream(reader, `${tag}/l/${fileName}`)
-  const mRes = await upload.upToQiniuStream(await resize(file.path, size.m) , `${tag}/m/${fileName}`)
-  const sRes = await upload.upToQiniuStream(await resize(file.path, size.s), `${tag}/s/${fileName}`)
+  const lRes = await upload.upToQiniuStream(reader, `${tag}/l/${fileName}.jpg`)
+  const mRes = await upload.upToQiniuStream(await resize(file.path, size.m) , `${tag}/m/${fileName}.jpg`)
+  const sRes = await upload.upToQiniuStream(await resize(file.path, size.s), `${tag}/s/${fileName}.jpg`)
   doc.identify = ind;
   doc.urls = {
-    s: `${config.IMG_SERVER}${sRes.key}`,
-    m: `${config.IMG_SERVER}${mRes.key}`,
-    l: `${config.IMG_SERVER}${lRes.key}`
+    s: `${config.IMG_SERVER}${sRes.key}.jpg`,
+    m: `${config.IMG_SERVER}${mRes.key}.jpg`,
+    l: `${config.IMG_SERVER}${lRes.key}.jpg`
   }
   doc.fileName = fileName;
   doc.originName = file.name;
+  console.log(doc)
   return doc
 }
 
@@ -119,23 +128,23 @@ function writePhotograph(file, tag, smallWidth = 416) {
       reject(err)
     }
 
-    gm(reader).resize(smallWidth)
-      .noProfile()
-      .write(`${p}/s/${fileName}.${type}`, err => {
-        if (err) {
-          reject(err)
-        } else {
-          doc.fileName = fileName;
-          doc.originName = file.name;
-          // resolve(doc)
-          getIdentify(file.path).then(res => {
-            doc.identify = res;
-            resolve(doc)
-          }).catch(e => {
-            reject(e)
-          })
-        }
-      });
+    // gm(reader).resize(smallWidth)
+    //   .noProfile()
+    //   .write(`${p}/s/${fileName}.${type}`, err => {
+    //     if (err) {
+    //       reject(err)
+    //     } else {
+    //       doc.fileName = fileName;
+    //       doc.originName = file.name;
+    //       // resolve(doc)
+    //       getIdentify(file.path).then(res => {
+    //         doc.identify = res;
+    //         resolve(doc)
+    //       }).catch(e => {
+    //         reject(e)
+    //       })
+    //     }
+    //   });
   })
 }
 

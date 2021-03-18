@@ -21,7 +21,7 @@ const photograph = yomiDb.createSchema({ //模式，架构
       height: Number,
       width: {
         type: Number,
-        min: 500
+        min: 10
       }
     },
     format: String,
@@ -78,15 +78,15 @@ module.exports = {
     const query2 = photographModel.find({
       tags: {$in: [tag]}
     });
-    return new Promise((reslove, reject) => {
+    return new Promise((resolve, reject) => {
       query1.countDocuments().exec((e, c) => {
         if(e) reject(e)
         res.total = c
         query2.skip((pageNo - 1) * pageSize)
           .limit(pageSize).exec((e, c) => {
-          if(e) reject(e)
+          e && reject(e)
           res.photoList = c
-          reslove(res)
+          resolve(res)
         })
       });
     })
