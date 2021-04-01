@@ -1,12 +1,9 @@
 module.exports = {
   apps: [{
+    name: 'YoPtoPro',
     script: 'app.js',
     watch: '.'
-  }, {
-    script: './service-worker/',
-    watch: ['./service-worker']
   }],
-  
   deploy: {
     production: {
       user: 'root',
