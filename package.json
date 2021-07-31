@@ -2,10 +2,13 @@
   "name": "yoptopro",
   "version": "1.0.0",
   "description": "personal website",
-  "main": "app.js",
+  "main": "src/app.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "supervisor app.js"
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "deploy": "pm2 deploy ecosystem.config.js production setup"
   },
   "repository": {
     "type": "git",
@@ -14,15 +17,32 @@
   "author": "yomi",
   "license": "MIT",
   "dependencies": {
+    "@typegoose/typegoose": "^7.6.1",
+    "@types/koa-joi-router": "^8.0.0",
+    "async-validator": "^3.5.2",
     "gm": "^1.23.1",
-    "koa": "^2.5.3",
-    "koa-body": "^4.0.4",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
+    "koa-joi-router": "^8.0.0",
+    "koa-jwt": "^4.0.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa2-cors": "^2.0.6",
-    "mongoose": "^5.1.4",
-    "qiniu": "^7.2.1",
-    "request": "^2.88.0",
-    "uuid": "^3.3.2"
+    "mongoose": "5.10.18",
+    "qiniu": "^7.3.3",
+    "request": "^2.88.2",
+    "uuid": "^3.4.0"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.3",
+    "@types/koa": "^2.13.3",
+    "@types/koa-router": "^7.4.2",
+    "@types/mongoose": "5.10.5",
+    "nodemon": "^2.0.7",
+    "supervisor": "^0.12.0",
+    "ts-lint": "^4.5.1",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.4"
   }
 }

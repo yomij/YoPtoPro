@@ -1,10 +1,8 @@
 const Router = require('koa-router');
-const pServer = require('../src/photograph/photographServer')
-const fileUtil = require('../src/utils/file')
+const pServer = require('../photograph/photographServer')
+const fileUtil = require('../utils/file')
 
-let photograph = new Router({
-  prefix: '/api/ym/photograph'
-});
+let photograph = new Router({ prefix: '/api/ym/photograph' });
 
 // 直接访问
 photograph.get('/*.jpg', async (ctx, next) => {
@@ -16,12 +14,14 @@ photograph.get('/*.jpg', async (ctx, next) => {
   await fileUtil.readPhotograph('1ba2203f661e599f8080a3ed0e3497b5.jpeg', 'l', 'tag').then(data => {
     ctx.body = data
   })
+})
+
+photograph({
 
 })
 
 // 上传
 photograph.post('/upload', async (ctx, next) => {
-  debugger
   try {
     let files = ctx.request.files.file; // 获取上传文件
     const tag = ctx.request.body.tag || 'yomi'

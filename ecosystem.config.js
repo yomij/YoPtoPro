@@ -7,7 +7,7 @@ module.exports = {
   deploy: {
     production: {
       user: 'root',
-      host: ["yomij.cn"],
+      host: ["yomij.com"],
       port: "22",
       ref: 'origin/master',
       repo: 'git@github.com:yomij/YoPtoPro.git',
