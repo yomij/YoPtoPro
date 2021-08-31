@@ -19,7 +19,7 @@ async function uploadPhoto(files: any, tag: string[]) {
         });
       }
     }
-  } catch (e) {
+  } catch (e: any) {
     msg.push({
       code: 500,
       message: e.message,

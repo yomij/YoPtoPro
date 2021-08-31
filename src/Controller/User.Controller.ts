@@ -2,7 +2,7 @@ import { ParameterizedContext } from 'koa';
 import { route, verify, Router } from '../lib/route';
 import { createUser, login } from '../Service/User.service';
 
-@Router({ prefix: 'user' })
+@Router({ prefix: '/user' })
 export default class UserController {
   @route('post')
   @verify({

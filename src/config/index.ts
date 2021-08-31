@@ -1,7 +1,7 @@
 import path from 'path';
 
 export default {
-  APP_PORT: 3000,
+  APP_PORT: 3333,
   PHOTOGRAPH_PATH: path.join(process.cwd(), 'public', 'photograph'),
   PHOTOGRAPH_SIZE_SMALL: 416,
   PHOTOGRAPH_SIZE_MIDDLE: 1000,

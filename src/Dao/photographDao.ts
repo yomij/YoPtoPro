@@ -1,4 +1,5 @@
 import {getModelForClass, prop, Ref} from '@typegoose/typegoose';
+import mongoose, {Types} from 'mongoose';
 import {Tag} from './tagDao';
 
 export  class ImageMeta {
@@ -9,9 +10,15 @@ export  class ImageMeta {
   height!: number;
 }
 
+export enum PhotographStatus {
+  DELETED,
+  NORMAL,
+  HIDDEN,
+}
+
 export class Photograph {
-  @prop({ require: true, type: Number })
-  public id!: number;
+  // @prop({ require: true, type: Number })
+  // public id!: number;
 
   @prop({ require: true, type: String })
   public name!: string;
@@ -34,7 +41,7 @@ export class Photograph {
   @prop({ ref: () => Tag, required: true})
   public tags!: Ref<Tag>[];
 
-  @prop({ type: String })
+  @prop({ unique: true })
   public url!: string; // 照片Url
 
   @prop({ type: Date, default: Date.now() })
@@ -43,9 +50,17 @@ export class Photograph {
   @prop({ type: String })
   public blurStr!: string;
 
+  // 图片元信息
   @prop({ type: () => ImageMeta })
   public meta!: ImageMeta;
 
+  // 状态
+  @prop({ default: PhotographStatus.NORMAL })
+  public status!: PhotographStatus;
+
+  // 评级
+  @prop({ default: 3, max: 5, min: 1 })
+  public rating!: number;
 }
 
 const photographModel = getModelForClass(Photograph);
@@ -57,15 +72,25 @@ export default {
    */
   insertPhotos: async (photos: Photograph[] | Photograph) => await photographModel.insertMany(photos),
   /**
-   * 通过tag查询
-   * @param tag
+   * 分页查询
+   * @param tags
    * @param pageNo
    * @param pageSize
    */
-  async getPhotographListByTag(tag: Tag, pageNo: number, pageSize: number) {
-    const query = photographModel.find({ tags: {$in: [tag]} });
-    const total = await query.countDocuments();
-    const list = await query.skip((pageNo - 1) * pageSize).limit(pageSize);
+  async getPhotographList(pageNo: number, pageSize: number, tags?: Types.ObjectId[]) {
+    const query = photographModel.find(tags ? { mainTag: {$in: tags} } : {}, { __v: 0 });
+    const countQuery = photographModel.find(tags ? { mainTag: {$in: tags} } : {}, { __v: 0 });
+    const list = await query
+      .skip((pageNo - 1) * pageSize)
+      .limit(pageSize)
+      .populate('tags mainTag', { __v: 0 });
+    const total = await countQuery.countDocuments();
     return { total, list };
   },
+  /**
+   * 编辑单个
+   * @param id
+   * @param photo
+   */
+  updatePhoto: async (id: string, photo: Photograph) => await photographModel.findByIdAndUpdate(id, photo),
 };

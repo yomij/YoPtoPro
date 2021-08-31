@@ -1,8 +1,9 @@
-import {ExtendableContext, Next} from 'koa';
-import Koa from 'koa';
+import fs from 'fs';
+import Koa, {ExtendableContext, Next} from 'koa';
 import koaBody from 'koa-body';
 import path from 'path';
 import config from './config';
+import registerRoute from './Controller';
 
 const cors = require('koa2-cors');
 const serve = require('koa-static');
@@ -11,14 +12,9 @@ const jwtKoa = require('koa-jwt');
 const jwt = require('jsonwebtoken');
 const verify = require('util').promisify(jwt.verify);
 
-const main = serve(path.join(__dirname, 'public'));
+const assetsPath = path.join(__dirname, '../public/dist');
+const main = serve(assetsPath);
 const app = new Koa();
-import {getRouterFromClass} from './lib/route';
-import r from './router';
-
-import PhotographController from './Controller/Photograph.Controller';
-import TagController from './Controller/Tag.Controller';
-import UCController from './Controller/User.Controller';
 
 // 连接mongoose
 require('./utils/dbConnect')();
@@ -93,20 +89,28 @@ app.use(async (ctx: ExtendableContext, next: Next) => {
   ctx.set('X-Response-Time', `${ms}ms`);
 });
 
+app.use(async (ctx, next) => { // history 中间件
+  await next(); // 等待请求执行完毕
+  const router = [
+    '/photograph',
+  ];
+  if (ctx.response.status === 404 && router.includes(ctx.request.url)) { // 判断是否符合条件
+    ctx.type = 'text/html; charset=utf-8'; // 修改响应类型
+    ctx.body = fs.readFileSync(path.join(assetsPath, 'index.html')); // 修改响应体
+  }
+});
+
 // console.log(Route());
 app.use(cors());
 app.use(main);
 // app.use(Route);
-app.use(getRouterFromClass(UCController));
-app.use(getRouterFromClass(PhotographController));
-app.use(getRouterFromClass(TagController));
-app.use(r);
+registerRoute(app);
 
 // console.log(Router)
 app.listen(
   config.APP_PORT,
   () =>
-    console.log(`running http://localhost:${config.APP_PORT}/test.html`,
+    console.log(`running http://localhost:${config.APP_PORT}`,
       'test',
     ),
 );

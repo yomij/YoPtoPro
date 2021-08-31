@@ -20,7 +20,7 @@ function createHandler(handler: KoaRouter.IMiddleware, verifyOptions?: VerifyOpt
           try {
             // @ts-ignore
             await createAsyncValidator(option)(ctx, ...rest);
-          } catch (e) {
+          } catch (e: any) {
             if (option.handleError) {
               option.handleError(ctx, e);
             } else {
@@ -87,7 +87,7 @@ export function route(opt: HTTP_METHOD | RouteOption) {
 }
 
 function createAsyncValidator(opt: VerifyOption) {
-  return async function AsyncValidator(ctx: ParameterizedContext, ...rest: any[]) {
+  return async function AsyncValidator(ctx: ParameterizedContext) {
     let data = {
       ...(ctx.request[opt.type] || {}),
     };
@@ -96,8 +96,8 @@ function createAsyncValidator(opt: VerifyOption) {
   };
 }
 
-export function verify(opt: VerifyOption | VerifyOption[]) {
-  return function(target: any, propertyKey: string) {
+export function verify<T>(opt: VerifyOption | VerifyOption[]) {
+  return function<T>(target: any, propertyKey: string) {
     let map = verifyMap.get(target) || new Map<string, VerifyOption[]>();
     if (!Array.isArray(opt)) {
       opt = [ opt ];

@@ -14,7 +14,8 @@
     "sourceMap": true,
     "moduleResolution": "node",
     "strict": true,
-    "noEmit": true,
+    "noEmit": false,
+    "composite": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
@@ -27,12 +28,12 @@
     }
   },
   "include": [
-    "./src/**/*.ts",
-    "./test/*.ts"
+    "./src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
     "dist"
   ],
-  "outDir": "./dist/"
+  "rootDir": "./src",
+  "outDir": "./dist"
 }

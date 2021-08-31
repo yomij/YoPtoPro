@@ -1,18 +1,11 @@
-import { getModelForClass, prop } from '@typegoose/typegoose';
+import { getModelForClass, index, prop } from '@typegoose/typegoose';
 
+@index({ tag: 1, group: 1 }, { unique: true })
 export class Tag {
-  @prop({
-    require: true,
-    type: String,
-    unique: true,
-  })
+  @prop()
   public tag!: string;
 
-  @prop({
-    require: true,
-    type: String,
-    unique: true,
-  })
+  @prop()
   public group!: string;
 }
 
