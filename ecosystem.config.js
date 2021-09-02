@@ -1,8 +1,9 @@
 module.exports = {
   apps: [{
     name: 'YoPtoPro',
-    script: 'app.js',
-    watch: '.'
+    script: 'node_modules/.bin/ts-node',
+    watch: '.',
+    args: 'src/app.ts'
   }],
   deploy: {
     production: {
@@ -13,8 +14,7 @@ module.exports = {
         port: "22",
       }],
       ref: 'origin/dev',
-
-      repo: 'https://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@github.com/yomij/YoPtoPro.git',
+      repo: 'git@github.com:yomij/YoPtoPro.git',
       path: 'project',
       'pre-deploy-local': '',
       'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',

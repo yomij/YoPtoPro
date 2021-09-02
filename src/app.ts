@@ -4,6 +4,7 @@ import koaBody from 'koa-body';
 import path from 'path';
 import config from './config';
 import registerRoute from './Controller';
+import { logger, accessLogger } from "./utils/logger";
 
 const cors = require('koa2-cors');
 const serve = require('koa-static');
@@ -74,20 +75,7 @@ interface VerifyContext extends ExtendableContext {
 //   ], // 数组中的路径不需要通过jwt验证
 // }));
 
-// logger
-app.use(async (ctx: ExtendableContext, next: Next) => {
-  await next();
-  const rt = ctx.response.get('X-Response-Time');
-  console.log(`${ctx.method} ${ctx.url} - ${rt}`);
-});
-
-// x-response-time
-app.use(async (ctx: ExtendableContext, next: Next) => {
-  const start = Date.now();
-  await next();
-  const ms = Date.now() - start;
-  ctx.set('X-Response-Time', `${ms}ms`);
-});
+app.use(accessLogger());
 
 app.use(async (ctx, next) => { // history 中间件
   await next(); // 等待请求执行完毕
@@ -105,6 +93,8 @@ app.use(cors());
 app.use(main);
 // app.use(Route);
 registerRoute(app);
+
+app.on('error', err => logger.error(err));
 
 // console.log(Router)
 app.listen(
