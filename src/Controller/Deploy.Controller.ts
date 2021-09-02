@@ -12,7 +12,7 @@ export default class TagController {
   })
   async deploy(ctx: ParameterizedContext) {
     const { query } = ctx.request;
-    console.log(query);
+    loggerInfo.info(query);
     deploy();
     ctx.body = { msg: 1 };
   }
@@ -23,7 +23,8 @@ export default class TagController {
   })
   async deployPost(ctx: ParameterizedContext) {
     const { body } = ctx.request;
-    loggerInfo.info({a: 1});
+    loggerInfo.info(body);
+    deploy();
     ctx.body = { msg: 1 };
   }
 }
