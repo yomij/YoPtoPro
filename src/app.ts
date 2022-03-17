@@ -1,10 +1,10 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import Koa, {ExtendableContext, Next} from 'koa';
 import koaBody from 'koa-body';
 import path from 'path';
 import config from './config';
 import registerRoute from './Controller';
-import { logger, accessLogger } from "./utils/logger";
+import { accessLogger, logger } from './utils/logger';
 
 const cors = require('koa2-cors');
 const serve = require('koa-static');

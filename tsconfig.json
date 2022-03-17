@@ -25,15 +25,14 @@
       "@/": [
         "./src/"
       ]
-    }
+    },
+    "outDir": "./dist"
   },
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist"
-  ],
-  "rootDir": "./src",
-  "outDir": "./dist"
+  ]
 }

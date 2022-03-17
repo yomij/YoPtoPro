@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
     "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
-    "build": "tsc src/app.ts",
-    "start": "node dist/app.js",
+    "build": "tsc",
+    "start": "node dist/src/app.js",
     "deploy": "pm2 deploy ecosystem.config.js production setup"
   },
   "repository": {
