@@ -1,5 +1,6 @@
-import {getModelForClass, prop, Ref} from '@typegoose/typegoose';
-import mongoose, {Types} from 'mongoose';
+const { getModelForClass, prop } = require('@typegoose/typegoose');
+import { Ref } from '@typegoose/typegoose';
+import {Types} from 'mongoose';
 import {Tag} from './tagDao';
 
 export  class ImageMeta {

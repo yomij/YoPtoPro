@@ -1,4 +1,4 @@
-import { getModelForClass, prop } from '@typegoose/typegoose';
+const {  getModelForClass, prop } = require('@typegoose/typegoose');
 
 export class User {
   @prop({

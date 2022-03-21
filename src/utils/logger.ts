@@ -20,10 +20,10 @@ log4js.configure({
     },
   },
   categories: {
-    default: {appenders: ['out'], level: 'info'},
-    out: {appenders: ['out'], level: 'info'},
-    access: {appenders: ['access'], level: 'info'},
-    application: {appenders: ['application'], level: 'WARN'},
+    default: { appenders: ['out'], level: 'info' },
+    out: { appenders: ['out'], level: 'info'},
+    access: { appenders: ['access'], level: 'info' },
+    application: { appenders: ['application'], level: 'WARN' },
   },
 });
 

@@ -1,7 +1,7 @@
 import { ParameterizedContext } from 'koa';
-import { route, verify, Router } from '../lib/route';
+import { route, Router } from '../lib/route';
 import deploy from '../scripts/deploy-helper';
-import {logger, loggerInfo} from "../utils/logger";
+import { loggerInfo } from '../utils/logger';
 
 @Router({ prefix: '/deploy' })
 export default class TagController {

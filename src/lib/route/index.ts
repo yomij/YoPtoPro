@@ -11,15 +11,19 @@ const verifyMap = new Map<any, Map<string, VerifyOption[]>>();
 const routeMap = new Map<any, KoaRouter>();
 const middlewareList: Koa.Middleware[] = [];
 
+/**
+ * 创建
+ * @param handler
+ * @param verifyOptions
+ */
 function createHandler(handler: KoaRouter.IMiddleware, verifyOptions?: VerifyOption[] ) {
   try {
     if (verifyOptions && verifyOptions.length) {
-      return async (ctx: ParameterizedContext, ...rest: any[]) => {
+      return async (ctx: ParameterizedContext, next: Koa.Next) => {
         for (let i = 0; i < verifyOptions.length; i++) {
           const option = verifyOptions[i];
           try {
-            // @ts-ignore
-            await createAsyncValidator(option)(ctx, ...rest);
+            await createAsyncValidator(option)(ctx);
           } catch (e: any) {
             if (option.handleError) {
               option.handleError(ctx, e);
@@ -34,7 +38,7 @@ function createHandler(handler: KoaRouter.IMiddleware, verifyOptions?: VerifyOpt
           }
         }
         // @ts-ignore
-        await handler(ctx, ...rest);
+        await handler(ctx, next);
       };
     }
   } catch (e) {
@@ -52,7 +56,7 @@ export function Router(opt?: KoaRouter.IRouterOptions) {
       router = new KoaRouter(opt);
     } else {
       router = new KoaRouter({
-        ...(opt || {}),
+        ...opt,
         prefix: opt?.prefix?.startsWith('/') ? opt?.prefix : `/${opt?.prefix}` || `/${constructor.name}`,
       });
       try {

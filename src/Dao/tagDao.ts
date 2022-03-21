@@ -1,4 +1,4 @@
-import { getModelForClass, index, prop } from '@typegoose/typegoose';
+const {  getModelForClass, index, prop } = require('@typegoose/typegoose');
 
 @index({ tag: 1, group: 1 }, { unique: true })
 export class Tag {

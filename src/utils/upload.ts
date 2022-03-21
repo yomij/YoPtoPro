@@ -31,7 +31,7 @@ function upToQiniu(filePath: string, key: string) {
       if (respInfo.statusCode === 200) {
         resolved(respBody);
       } else {
-        resolved(respBody);
+        reject(Error('上传失败'));
       }
     });
   });
@@ -47,7 +47,6 @@ function upToQiniuStream(stream: NodeJS.ReadableStream, key: string) {
   const putPolicy = new qiniu.rs.PutPolicy(options);
   const uploadToken = putPolicy.uploadToken(mac);
   const config = new qiniu.conf.Config();
-  // 空间对应的机房
   // @ts-ignore
   config.zone = qiniu.zone.Zone_z2;
 
