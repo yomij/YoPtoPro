@@ -29,7 +29,8 @@
     "outDir": "./dist"
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./deploy/**/*"
   ],
   "exclude": [
     "node_modules",
