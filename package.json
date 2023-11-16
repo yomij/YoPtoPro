@@ -8,7 +8,7 @@
     "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
     "build": "tsc",
     "start": "node dist/src/app.js",
-    "deployLocal": "npm run build && node dist/deploy/index.js",
+    "deployLocal": "npm run build && node dist/deploy/index.js"
   },
   "repository": {
     "type": "git",
