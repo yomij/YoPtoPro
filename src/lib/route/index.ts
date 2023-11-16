@@ -55,9 +55,15 @@ export function Router(opt?: KoaRouter.IRouterOptions) {
     if (!originRouterMap?.size) {
       router = new KoaRouter(opt);
     } else {
+      let prefix =
+        opt?.prefix === undefined ?
+          `/${constructor.name}` :
+          opt.prefix === '/' ?
+            undefined :
+            opt?.prefix?.startsWith('/') ? opt?.prefix : `/${opt?.prefix}`;
       router = new KoaRouter({
         ...opt,
-        prefix: opt?.prefix?.startsWith('/') ? opt?.prefix : `/${opt?.prefix}` || `/${constructor.name}`,
+        prefix,
       });
       try {
         originRouterMap.forEach(item => {

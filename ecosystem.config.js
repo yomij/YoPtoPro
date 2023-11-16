@@ -10,7 +10,7 @@ module.exports = {
       key: '~/.ssh/pm2deploy',
       user: 'yomi',
       host: [{
-        host: '121.4.172.117',
+        host: '150.158.198.110',
         port: "22",
       }],
       ref: 'origin/dev',

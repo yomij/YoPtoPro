@@ -5,6 +5,7 @@ import TagController from './Tag.Controller';
 import TagController2C from './Tag.Controller.2C';
 import UCController from './User.Controller';
 import UtilController, { HealthController } from './Util.Controller';
+
 export default (app: any) => {
   // register(app);
   app.use(getRouterFromClass(UCController));

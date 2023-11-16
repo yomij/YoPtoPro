@@ -7,8 +7,8 @@
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
     "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
     "build": "tsc",
-    "start": "node dist/app.js",
-    "deploy": "npm run build && node dist/deploy/index.js"
+    "start": "node dist/src/app.js",
+    "deployLocal": "npm run build && node dist/deploy/index.js",
   },
   "repository": {
     "type": "git",

@@ -24,7 +24,7 @@ export default {
   PHOTOGRAPH_SIZE_MIDDLE: 1000,
   DB_NAME: 'YomiWebside',
   DB_PROT: 27017,
-  DB_HOST: 'localhost',
+  DB_HOST: '150.158.198.110',
   SECRET: 'yomi',
   TENCENT_OSS_CONFIG,
   QINIU_OSS_CONFIG,
