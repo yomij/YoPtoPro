@@ -7,7 +7,7 @@ module.exports = {
   }],
   deploy: {
     production: {
-      key: '~/.ssh/pm2deploy',
+      key: '~/Downloads/server.pem',
       user: 'yomi',
       host: [{
         host: '150.158.198.110',

@@ -14,3 +14,4 @@ yarn-error.log*
 dist/
 public/
 logs/
+./ecosystem.config.js
