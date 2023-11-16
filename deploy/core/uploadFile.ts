@@ -10,7 +10,7 @@ async function uploadFile(config: DeployConfig, targetFile: string, localFile: s
     handleSourceFile(config);
     ssh.putFile(localFile, config.deployDir + '/' + targetFile).then(async () => {
       resolve(console.log('5-文件上传完成'));
-    }, (err) => {
+    }, (err: Error) => {
       reject(console.error('5-上传失败！', err));
     });
   });

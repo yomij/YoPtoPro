@@ -1,5 +1,4 @@
 import {Config, NodeSSH} from 'node-ssh';
-
 export const ssh = new NodeSSH();
 
 // 连接服务器

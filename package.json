@@ -7,7 +7,7 @@
     "test": "echo \\\"Error: no test specified\\\" && exit 1",
     "dev": "nodemon --watch src -e ts,tsx --exec ts-node src/app.ts",
     "build": "tsc",
-    "start": "node dist/src/app.js",
+    "start": "node dist/app.js",
     "deploy": "npm run build && node dist/deploy/index.js"
   },
   "repository": {
@@ -19,6 +19,7 @@
   "dependencies": {
     "@typegoose/typegoose": "^8.2.0",
     "async-validator": "^3.5.2",
+    "cos-nodejs-sdk-v5": "^2.11.6",
     "gm": "^1.23.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
@@ -32,6 +33,7 @@
     "mongoose": "5.13.8",
     "qiniu": "^7.3.3",
     "request": "^2.88.2",
+    "tencentcloud-sdk-nodejs": "^4.0.324",
     "uuid": "^3.4.0"
   },
   "devDependencies": {

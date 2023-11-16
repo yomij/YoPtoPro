@@ -1,3 +1,5 @@
+import {Remote_Type} from '../Controller/Photograph.Controller';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -5,6 +7,7 @@ const gm = require('gm');
 const uuidv5 = require('uuid/v5');
 const fmtTime = require('./fmtTime');
 import config from '../config';
+import {upToTencentStream} from './uploadTencent';
 
 const upload = require('./upload');
 
@@ -87,11 +90,16 @@ function getUUID(name: string) {
 //   });
 // }
 
-export async function uploadPhotograph(file: any, subPath: string = '') {
+export async function uploadPhotograph(file: any, remote: Remote_Type, subPath: string = '') {
   let reader = fs.createReadStream(file.path);
   let fileName = getUUID(file.name);
-  const lRes = await upload.upToQiniuStream(reader, `${subPath}${subPath[subPath.length - 1] === '/' ? '/' : ''}${fileName}`);
-  return `${config.IMG_SERVER}${lRes.key}`;
+  const key = `${subPath}${subPath[subPath.length - 1] === '/' ? '/' : ''}${fileName}`;
+  if (remote === 'QINIU') {
+    const lRes = await upload.upToQiniuStream(reader, key);
+    return `${config.QINIU_OSS_CONFIG.IMG_SERVER}${lRes.key}`;
+  }
+  await upToTencentStream(reader, key);
+  return `${config.TENCENT_OSS_CONFIG.IMG_SERVER}${key}`;
 }
 
 // function writePhotograph(file, tag, smallWidth = 416) {

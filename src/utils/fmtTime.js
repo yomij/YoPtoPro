@@ -1,5 +1,4 @@
-module.exports = function fmtTime(fmt) {
-    let date = new Date();
+module.exports = function fmtTime(date, fmt = 'yyyy-MM-DD hh:mm:ss') {
     let o = {
         "M+": date.getMonth() + 1, // 月份
         "d+": date.getDate(), // 日

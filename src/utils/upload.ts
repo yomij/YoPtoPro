@@ -2,15 +2,15 @@ import qiniu from 'qiniu';
 import appConfig from '../config';
 
 // 需要填写你的 Access Key 和 Secret Key
-qiniu.conf.ACCESS_KEY = appConfig.QINIU_ACCESS_KEY;
-qiniu.conf.SECRET_KEY = appConfig.QINIU_SECRET_KEY;
+qiniu.conf.ACCESS_KEY = appConfig.QINIU_OSS_CONFIG.QINIU_ACCESS_KEY;
+qiniu.conf.SECRET_KEY = appConfig.QINIU_OSS_CONFIG.QINIU_SECRET_KEY;
 
 let mac = new qiniu.auth.digest.Mac(qiniu.conf.ACCESS_KEY, qiniu.conf.SECRET_KEY);
 
 // 上传到七牛
 function upToQiniu(filePath: string, key: string) {
   const options = {
-    scope: appConfig.QINIU_SCOPE, // 你的七牛存储对象
+    scope: appConfig.QINIU_OSS_CONFIG.BUCKET, // 你的七牛存储对象
     // returnBody: `{"key":${sConfig.IMG_SERVER}"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}`
   };
   const putPolicy = new qiniu.rs.PutPolicy(options);
@@ -18,7 +18,7 @@ function upToQiniu(filePath: string, key: string) {
   const config = new qiniu.conf.Config();
   // 空间对应的机房
   // @ts-ignore
-  config.zone = qiniu.zone.Zone_z2;
+  config.zone = appConfig.QINIU_OSS_CONFIG.REGION;
   const localFile = filePath;
   const formUploader = new qiniu.form_up.FormUploader(config);
   const putExtra = new qiniu.form_up.PutExtra();
@@ -41,7 +41,7 @@ function upToQiniu(filePath: string, key: string) {
 // 上传到七牛
 function upToQiniuStream(stream: NodeJS.ReadableStream, key: string) {
   const options = {
-    scope: appConfig.QINIU_SCOPE, // 你的七牛存储对象
+    scope: appConfig.QINIU_OSS_CONFIG.BUCKET, // 你的七牛存储对象
     // returnBody: `{"key":${sConfig.IMG_SERVER}"$(key)","hash":"$(etag)","fsize":$(fsize),"bucket":"$(bucket)","name":"$(x:name)"}`
   };
   const putPolicy = new qiniu.rs.PutPolicy(options);

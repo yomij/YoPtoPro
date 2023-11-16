@@ -1,8 +1,9 @@
-import { ParameterizedContext } from 'koa';
+import {Context, ParameterizedContext} from 'koa';
 import {Photograph} from '../Dao/photographDao';
 import { route, verify, Router } from '../lib/route';
 import {add, get, upload} from '../Service/Photograph.service';
 
+export type Remote_Type = 'TENCENT' | 'QINIU';
 @Router({ prefix: '/api/2b/photograph' })
 export default class PhotographController {
   @route('post')
@@ -12,17 +13,15 @@ export default class PhotographController {
       blurStr: { type: 'string', required: true },
     },
   })
-  async upload(ctx: ParameterizedContext) {
-    const { files } = ctx.request;
-    ctx.body = await upload(files?.file);
+  async upload(ctx: Context) {
+    const { files, body } = ctx.request;
+    ctx.body = await upload(files?.file, body.remote);
   }
-
   @route('post')
   async create(ctx: ParameterizedContext) {
     const { body } = ctx.request;
     ctx.body = await add(body as Photograph[]);
   }
-
   @route({ method: 'post',  path: '/'})
   @verify({
     type: 'body',
