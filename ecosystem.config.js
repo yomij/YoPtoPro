@@ -7,7 +7,7 @@ module.exports = {
   }],
   deploy: {
     production: {
-      key: '~/Downloads/server.pem',
+      key: '~/.ssh/server',
       user: 'yomi',
       host: [{
         host: '150.158.198.110',
