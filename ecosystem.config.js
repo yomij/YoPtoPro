@@ -2,7 +2,10 @@ module.exports = {
   apps: [{
     name: 'YoPtoPro',
     script: './src/app.js',
-    watch: '.',
+    watch: ['./dist'],
+    ignore_watch: [
+      './dist/src/logs',
+    ]
   }],
   deploy: {
     production: {
