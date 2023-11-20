@@ -1,9 +1,8 @@
 module.exports = {
   apps: [{
     name: 'YoPtoPro',
-    script: 'node_modules/.bin/ts-node',
+    script: './src/app.js',
     watch: '.',
-    args: 'src/app.ts'
   }],
   deploy: {
     production: {
@@ -17,7 +16,7 @@ module.exports = {
       repo: 'git@github.com:yomij/YoPtoPro.git',
       path: 'project',
       'pre-deploy-local': '',
-      'post-deploy': 'npm install && pm2 reload ecosystem.config.js --env production',
+      'post-deploy': 'npm install && npm run build && pm2 reload ecosystem.config.js --env production',
       'pre-setup': ''
     }
   }
