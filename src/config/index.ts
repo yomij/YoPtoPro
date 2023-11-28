@@ -22,7 +22,7 @@ export default {
   PHOTOGRAPH_PATH: path.join(process.cwd(), 'public', 'photograph'),
   PHOTOGRAPH_SIZE_SMALL: 416,
   PHOTOGRAPH_SIZE_MIDDLE: 1000,
-  DB_NAME: 'YomiWebside',
+  DB_NAME: 'YOMI_WEB_SITE',
   DB_PROT: 27017,
   DB_HOST: '150.158.198.110',
   SECRET: 'yomi',

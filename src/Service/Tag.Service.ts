@@ -17,3 +17,12 @@ export async function getTagsByGroup(group: string) {
     return Response(500, e.message);
   }
 }
+
+export const getTags = async () => {
+  try {
+    const data =  await TagDao.queryAll();
+    return Response(200, 'success', data);
+  } catch (e: any) {
+    return Response(500, e.message);
+  }
+}
